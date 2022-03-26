@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rewired;
 
-// this menu allows the player to scroll through the letters and input a "calsign" name
-// rather than use an input field, this script just fakes one with a text element (you can't click it)
+// scroll through the letters and input a filename
 public class PlayerCreateDataMenu : BaseMenu {
-    /*
+    
     [SerializeField] Text InputText;         // display the text input so far
     [SerializeField] Selectable[] LetterButtons;    // display chars on the text of these elements for controller selection
     //
@@ -19,18 +18,17 @@ public class PlayerCreateDataMenu : BaseMenu {
     bool useKeyboard = false;               // check all keyboard keys in Update?
 
 	new void Start () {
-        // all BaseMenus reference a MenuController
-        // baseMenu sets an initial focused Selectable
+        // baseMenu sets an initial focused Selectable chosen from the editor
         base.Start();
 
-        // create a char array to display in a 3-wide window
+        // create a char alphabet array, file names are A-Z and underscore
         letters = new char[letterCount];
         int nextASCII = 65;
         for(int i = 0; i <= 25; ++i) {
             letters[i] = (char)nextASCII;
             ++nextASCII;
         }
-        letters[26] = '_'; // names are A-Z and underscore
+        letters[26] = '_';
 
         // 3 Text elements display some characters for selection
         window = new Text[3];
@@ -40,7 +38,7 @@ public class PlayerCreateDataMenu : BaseMenu {
 
         // if the menuController is Rewired player 1, the keyboard ...
         // ... also subscribe a "keyboard" function for callsign input
-        if(menuController.RewiredID == 1) { useKeyboard = true; }
+        if(menuController.RewiredID == 1 || menuController.RewiredID == 0) { useKeyboard = true; }
 
         // subscribe to input events- this script additionally moves a transform on menu inputs
         menuController.MenuInputEvent += MenuInputUpdate;
@@ -160,6 +158,7 @@ public class PlayerCreateDataMenu : BaseMenu {
     public void CreatePlayerDataButton() {
 
         // PlayerDataController will attempt to write a new PlayerData. 
+        /*
         if (PlayerDataController.WriteNewPlayerData(InputText.text)) {
 
             //menuController.EnableMenu(3);
@@ -168,7 +167,7 @@ public class PlayerCreateDataMenu : BaseMenu {
         }
         else {
             // False if the file already exists (flash red)
-        }
+        }*/
     }
 
     public void BackButton() {
@@ -177,5 +176,5 @@ public class PlayerCreateDataMenu : BaseMenu {
         menuController.EnableMenu(1);
         Destroy(gameObject);
     }
-    */
+    
 }

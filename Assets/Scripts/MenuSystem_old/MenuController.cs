@@ -202,16 +202,19 @@ public class MenuController : MonoBehaviour {
     }
 
     // instantiate the selected menu
-    public void EnableMenu(int Index) {
-
+    public void EnableMenu(int Index)
+    {
+        DestroyMenu();
         GameObject go = Instantiate(MenuPrefabs[Index], transform);
 
         // before activating, set the color of any buttons to this controller's default
-        for(int i = go.transform.childCount-1; i >=0; --i) {
+        for (int i = go.transform.childCount - 1; i >= 0; --i)
+        {
             // for each transform child
             Transform child = go.transform.GetChild(i);
             // if the child has a Selectable
-            if(child.GetComponent<Selectable>()) {
+            if (child.GetComponent<Selectable>())
+            {
                 // set the Selectable's color block to match controller's default
                 Selectable s = child.GetComponent<Selectable>();
                 s.colors = defaultColors;
@@ -219,6 +222,11 @@ public class MenuController : MonoBehaviour {
         }
 
         go.SetActive(true);
+    }
+
+    public void DestroyMenu()
+    {
+        Destroy(transform.GetChild(0).gameObject);
     }
     // (menus typically destroy themselves when enabling another menu)
 

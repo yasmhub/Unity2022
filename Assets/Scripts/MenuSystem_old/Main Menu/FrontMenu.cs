@@ -15,7 +15,13 @@ public class FrontMenu : BaseMenu {
 
         Destroy(gameObject);
     }
+    */
+    public void SinglePlayerButton() {
 
+        menuController.EnableMenu(1);
+    }
+
+    /*
     public void MultiplayerButton() {
         
         // enable the Multiplayer Menu Manager, which will enable up to 4 Player Menu Controllers

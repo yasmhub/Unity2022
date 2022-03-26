@@ -111,17 +111,16 @@ public class PlayerSelectDataMenu : BaseMenu {
             }
         }
     }
+    */
 
-    // enable a menu allowing the player to input a "callsign" ...
-    // ... creating their unique PlayerData
+    // enable save file creation menu
     public void NewPlayerButton() {
 
         menuController.EnableMenu(2);
 
         // don't forget to unsubscribe the additional input action
-        menuController.MenuInputEvent -= MenuInputMoveButtons;
+        //menuController.MenuInputEvent -= MenuInputMoveButtons;
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
-    */
 }
