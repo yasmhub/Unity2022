@@ -4,6 +4,8 @@ using UnityEngine;
 using Rewired;
 using System.Linq;
 
+// list 2 input listeners
+// 
 public class InputMain : MonoBehaviour
 {
     // flyweight: these ID's will be the same for each input listener
@@ -12,6 +14,7 @@ public class InputMain : MonoBehaviour
     public int LookVertical = 2;
     public int LookHorizontal = 3;
     public int Jump = 4;
+    public int Back = 5;
     // one for each player
     public InputListener[] listeners;
 
@@ -45,6 +48,7 @@ public class InputListener
     public float lookV;
     public float lookH;
     public bool jump;
+    public bool back;
 
     public InputListener(InputMain InMain, int RewiredID)
     {
@@ -69,6 +73,7 @@ public class InputListener
         lookH = player.GetAxis(inMain.LookHorizontal);
         lookV = player.GetAxis(inMain.LookVertical);
         jump = player.GetButtonDown(inMain.Jump);
+        back = player.GetButtonDown(inMain.Back);
 
         // update all scripts using this input
         for (int i = receivers.Count - 1; i >= 0; --i)

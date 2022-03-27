@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8636875567227895740}
+  - component: {fileID: 383946415}
+  - component: {fileID: 7676784138071855690}
   m_Layer: 0
   m_Name: Game Main
   m_TagString: Untagged
@@ -30,3 +32,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &383946415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4074305070746503204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1f7519f16508ab46968b161fe7f8c57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  someBool: 0
+  otherBool: 0
+--- !u!114 &7676784138071855690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4074305070746503204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9c311759a58f240a4301fe7371648c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveVertical: 0
+  MoveHorizontal: 1
+  LookVertical: 2
+  LookHorizontal: 3
+  Jump: 4

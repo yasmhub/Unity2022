@@ -8,12 +8,13 @@ using Rewired;
 public class BaseMenu : MonoBehaviour {
 
     [SerializeField] Selectable InitialFocus;       // inform the menu controller which Selectable is first
+    [SerializeField] Selectable BackButton;         // most menus have a "back" button
     protected MenuController menuController;        // the MenuController which instantiated this script
 
     protected void Start() {
 
         // reliable because BaseMenus are instantiated by and attached to MenuControllers
         menuController = transform.GetComponentInParent<MenuController>();
-        menuController.SetFocus(InitialFocus);
+        menuController.SetFocus(InitialFocus);        
     }
 }

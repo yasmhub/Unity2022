@@ -17,6 +17,7 @@ public class PlayerCreateDataMenu : BaseMenu {
     //
     bool useKeyboard = false;               // check all keyboard keys in Update?
 
+    /*
 	new void Start () {
         // baseMenu sets an initial focused Selectable chosen from the editor
         base.Start();
@@ -41,7 +42,7 @@ public class PlayerCreateDataMenu : BaseMenu {
         if(menuController.RewiredID == 1 || menuController.RewiredID == 0) { useKeyboard = true; }
 
         // subscribe to input events- this script additionally moves a transform on menu inputs
-        menuController.MenuInputEvent += MenuInputUpdate;
+        menuController.MenuInputEvent += MenuInputUpdate; // ----------------------------------------------------- replace this
 
         // UpdateWindow is called on input to scroll the chars displayed
         // The first update centers the letter "B" displaying "A B C"
@@ -49,8 +50,9 @@ public class PlayerCreateDataMenu : BaseMenu {
         // clear editor placeholder text
         InputText.text = "";
     }
-
+    
     // displays a scrolling window over a char array
+    /*
     void MenuInputUpdate(MenuInputData InputData) {
 
         // if the player presses "A" input the character
@@ -167,9 +169,9 @@ public class PlayerCreateDataMenu : BaseMenu {
         }
         else {
             // False if the file already exists (flash red)
-        }*/
+        }
     }
-
+    */
     public void BackButton() {
 
         // enabled the player data select menu
