@@ -10,7 +10,6 @@ public class MenuController : MonoBehaviour, InputReceiver {
 
     public void InputUpdate(InputListener InputListener)
     {
-        Debug.Log("x");
         // if previous input hasn't locked us out
         if (Time.time >= nextInputTime)
         {
@@ -23,12 +22,8 @@ public class MenuController : MonoBehaviour, InputReceiver {
             // 
             if (InputListener.back)
             {
-
                 nextInputTime = Time.time + InputFrequency;
             }
-
-            Debug.Log("x");
-
 
             // input moves selectable
             Selectable newFocus = null;
@@ -64,6 +59,9 @@ public class MenuController : MonoBehaviour, InputReceiver {
             }
         }
     }
+    // input is rate-limited
+    public float InputFrequency = 0.3f;
+    public float nextInputTime;
 
     [Header("Channel driving this menu.")]
     [SerializeField] int rewiredID;
@@ -83,9 +81,6 @@ public class MenuController : MonoBehaviour, InputReceiver {
     [SerializeField] Color DefaultColor = Color.white;
     ColorBlock focusedColors;
     ColorBlock defaultColors;
-    // input is rate-limited
-    [SerializeField] float InputFrequency = 0.3f;
-    float nextInputTime;
     // NultiplayerMenuManager sets these 0...3 on instantiated menus
     public int ScreenPosition
     {
@@ -110,7 +105,6 @@ public class MenuController : MonoBehaviour, InputReceiver {
 
     void Awake()
     {
-
         // destroy any child objects (menu prefabs being worked on in the editor)
         foreach (Transform t in transform)
         {
@@ -129,16 +123,18 @@ public class MenuController : MonoBehaviour, InputReceiver {
         defaultColors.pressedColor = FocusedColor;
         defaultColors.colorMultiplier = 1;
 
-        nextInputTime = Time.time + InputFrequency;
         EnableMenu(0);
     }
 
     void Start()
     {
-        rewiredPlayer = ReInput.players.GetPlayer(rewiredID);
-
         // get input singleton
         GameMain.Game.Input.listeners[rewiredID].AddReciever(this);
+        // input is rate limited
+        nextInputTime = Time.time + InputFrequency;
+
+        // is this vestigial yet?
+        rewiredPlayer = ReInput.players.GetPlayer(rewiredID); // ----------------------------------------------------------------------------------
     }
 
     void OnEnable()

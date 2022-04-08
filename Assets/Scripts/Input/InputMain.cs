@@ -43,12 +43,12 @@ public class InputListener
     Player player;
     List<InputReceiver> receivers;
 
-    public float moveV;
-    public float moveH;
-    public float lookV;
-    public float lookH;
-    public bool jump;
-    public bool back;
+    public float moveV = 0f;
+    public float moveH = 0f;
+    public float lookV = 0f;
+    public float lookH = 0f;
+    public bool jump = false;
+    public bool back = false;
 
     public InputListener(InputMain InMain, int RewiredID)
     {

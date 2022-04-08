@@ -6,40 +6,50 @@ using Rewired;
 
 // input file/name and create a new save file / player data
 public class PlayerCreateDataMenu : BaseMenu, InputReceiver {
+    
+    bool useKeyboard = false;  // check all keyboard keys in Update?
 
     // used to change text ui displaying characters for joystick file name input
     public void InputUpdate(InputListener InputListener)
     {
-        // if the player presses "A" input the character
-        if (InputListener.jump)
+        if (Time.time >= nextInputTime && !useKeyboard)
         {
-            AddLetter();
-            // menuController.InvokeFocusButton(); also acessible by external UI call
-            return;
-        }
+            nextInputTime += InputFrequency;
 
-        if (InputListener.back)
-        {
-            RemoveLetter();
-            return;
-        }
-
-        float horizontal = InputListener.moveH;
-        if (horizontal != 0f)
-        {
-            if (horizontal > 0f)
+            // if the player presses "A" input the character
+            if (InputListener.jump)
             {
-
-                letterIndex += 1;
+                AddLetter();
+                // menuController.InvokeFocusButton(); also acessible by external UI call
+                return;
             }
-            else
+
+            if (InputListener.back)
             {
-
-                letterIndex -= 1;
+                RemoveLetter();
+                return;
             }
-            UpdateWindow();
+
+            float horizontal = InputListener.moveH;
+            if (horizontal != 0f)
+            {
+                if (horizontal > 0f)
+                {
+
+                    letterIndex += 1;
+                }
+                else
+                {
+
+                    letterIndex -= 1;
+                }
+                UpdateWindow();
+            }
         }
     }
+    // input is rate-limited
+    public float InputFrequency = 0.3f;
+    public float nextInputTime;
 
     [SerializeField] Text InputText;         // display the text input so far
     [SerializeField] Selectable[] LetterButtons;    // display chars on the text of these elements for controller selection
@@ -48,8 +58,6 @@ public class PlayerCreateDataMenu : BaseMenu, InputReceiver {
     char[] letters;                         // A-Z
     int letterIndex = 1;                    // index of the letter currently centered 
     int letterCount = 27;                   // how many letters? (+1, _ underscores for spaces)
-    //
-    bool useKeyboard = false;               // check all keyboard keys in Update?
 
     new void Start()
     {
@@ -57,6 +65,8 @@ public class PlayerCreateDataMenu : BaseMenu, InputReceiver {
         base.Start();
 
         GameMain.Game.Input.listeners[menuController.RewiredID].AddReciever(this);
+        // input is rate limited
+        nextInputTime = Time.time + InputFrequency;
 
         // create a char alphabet array, file names are A-Z and underscore
         letters = new char[letterCount];
@@ -77,7 +87,7 @@ public class PlayerCreateDataMenu : BaseMenu, InputReceiver {
 
         // if the menuController is Rewired player 1, the keyboard ...
         // ... also subscribe a "keyboard" function for callsign input
-        if (menuController.RewiredID == 1 || menuController.RewiredID == 0) { useKeyboard = true; }
+        if (menuController.RewiredID == 0) { useKeyboard = true; }
 
         // UpdateWindow is called on input to scroll the chars displayed
         // The first update centers the letter "B" displaying "A B C"
@@ -89,10 +99,8 @@ public class PlayerCreateDataMenu : BaseMenu, InputReceiver {
     // the keyboard should be able to directly type in a name
     void Update()
     {
-
         if (useKeyboard)
         {
-
             string name = InputText.text;
             // see KeyCode definition, 97-122 are A-Z
             for (int i = 97; i <= 122; ++i)
