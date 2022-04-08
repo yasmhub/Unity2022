@@ -87,7 +87,8 @@ public class MenuController : MonoBehaviour, InputReceiver {
     [SerializeField] float InputFrequency = 0.3f;
     float nextInputTime;
     // NultiplayerMenuManager sets these 0...3 on instantiated menus
-    public int ScreenPosition {
+    public int ScreenPosition
+    {
         get { return screenPosition; }
         set { screenPosition = value; }
     }
@@ -96,24 +97,23 @@ public class MenuController : MonoBehaviour, InputReceiver {
     // it listens for input, and sets the player who will control the menus here ...
     public int RewiredID
     {
-        get {
+        get
+        {
             return rewiredID;
         }
-        set {
+        set
+        {
             rewiredID = value;
             GameMain.Game.Input.listeners[rewiredID].AddReciever(this);
         }
     }
 
-    // player create data menu checks focus
-    // public Selectable GetFocus {
-    //    get { return focus; }
-    //}
-
-    void Awake() {
+    void Awake()
+    {
 
         // destroy any child objects (menu prefabs being worked on in the editor)
-        foreach (Transform t in transform) {
+        foreach (Transform t in transform)
+        {
             Destroy(t.gameObject);
         }
 
@@ -141,7 +141,8 @@ public class MenuController : MonoBehaviour, InputReceiver {
         GameMain.Game.Input.listeners[rewiredID].AddReciever(this);
     }
 
-    void OnEnable() {
+    void OnEnable()
+    {
         nextInputTime = Time.time + InputFrequency;
     }
 
@@ -199,19 +200,27 @@ public class MenuController : MonoBehaviour, InputReceiver {
     // (menus typically destroy themselves when enabling another menu)
 
     // Update() polling tries to move the focused element
-    public void SetFocus(Selectable NewFocus) {
+    public void SetFocus(Selectable NewFocus)
+    {
 
-        if (focus != null) {
+        if (focus != null)
+        {
 
             focus.colors = defaultColors;
             focus = NewFocus;
             focus.colors = focusedColors;
         }
-        else {
+        else
+        {
 
             // initial case
             focus = NewFocus;
             focus.colors = focusedColors;
         }
+    }
+
+    public void OnDestroy()
+    {
+        GameMain.Game.Input.listeners[rewiredID].RemoveReceiver(this);
     }
 }
