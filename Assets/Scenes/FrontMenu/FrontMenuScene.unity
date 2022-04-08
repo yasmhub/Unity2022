@@ -191,6 +191,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Menu Controller
       objectReference: {fileID: 0}
+    - target: {fileID: 114008369621810278, guid: c7fc3851e2ed0c7459e2418cd1b9631f, type: 3}
+      propertyPath: rewiredID
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224584854138149944, guid: c7fc3851e2ed0c7459e2418cd1b9631f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
