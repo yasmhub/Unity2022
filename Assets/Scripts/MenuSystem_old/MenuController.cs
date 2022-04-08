@@ -6,10 +6,11 @@ using UnityEngine.UI;
 using Rewired;
 
 // instantiate menu prefabs & poll navigation for one player 
-public class MenuController : InputReceiver {
+public class MenuController : MonoBehaviour, InputReceiver {
 
-    public override void InputUpdate(InputListener InputListener)
+    public void InputUpdate(InputListener InputListener)
     {
+        Debug.Log("x");
         // if previous input hasn't locked us out
         if (Time.time >= nextInputTime)
         {
@@ -93,23 +94,21 @@ public class MenuController : InputReceiver {
 
     // the multiplayer lobby has a disabled MenuController for each player.
     // it listens for input, and sets the player who will control the menus here ...
-    public int RewiredID {
+    public int RewiredID
+    {
         get {
             return rewiredID;
         }
         set {
             rewiredID = value;
-            rewiredPlayer = ReInput.players.GetPlayer(rewiredID);
+            GameMain.Game.Input.listeners[rewiredID].AddReciever(this);
         }
     }
-    // PlasyerSelectDataMenu polls and performs additional actions while open
-    public Player RewiredPlayer {
-        get { return rewiredPlayer; }
-    }
+
     // player create data menu checks focus
-    public Selectable GetFocus {
-        get { return focus; }
-    }
+    // public Selectable GetFocus {
+    //    get { return focus; }
+    //}
 
     void Awake() {
 
@@ -134,8 +133,12 @@ public class MenuController : InputReceiver {
         EnableMenu(0);
     }
 
-    void Start() {
+    void Start()
+    {
         rewiredPlayer = ReInput.players.GetPlayer(rewiredID);
+
+        // get input singleton
+        GameMain.Game.Input.listeners[rewiredID].AddReciever(this);
     }
 
     void OnEnable() {

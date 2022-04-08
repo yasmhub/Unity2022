@@ -16,7 +16,6 @@ public class PlayerCreateDataMenu : BaseMenu {
     int letterCount = 27;                   // how many letters? (+1, _ underscores for spaces)
     //
     bool useKeyboard = false;               // check all keyboard keys in Update?
-
     /*
 	new void Start () {
         // baseMenu sets an initial focused Selectable chosen from the editor
@@ -42,7 +41,9 @@ public class PlayerCreateDataMenu : BaseMenu {
         if(menuController.RewiredID == 1 || menuController.RewiredID == 0) { useKeyboard = true; }
 
         // subscribe to input events- this script additionally moves a transform on menu inputs
-        menuController.MenuInputEvent += MenuInputUpdate; // ----------------------------------------------------- replace this
+        // menuController.MenuInputEvent += MenuInputUpdate; // ----------------------------------------------------- replace this
+        MenuController mc = 
+        GameMain.Game.Input.listeners[menuController.RewiredID].AddReciever(this);
 
         // UpdateWindow is called on input to scroll the chars displayed
         // The first update centers the letter "B" displaying "A B C"
@@ -52,7 +53,6 @@ public class PlayerCreateDataMenu : BaseMenu {
     }
     
     // displays a scrolling window over a char array
-    /*
     void MenuInputUpdate(MenuInputData InputData) {
 
         // if the player presses "A" input the character
@@ -160,23 +160,21 @@ public class PlayerCreateDataMenu : BaseMenu {
     public void CreatePlayerDataButton() {
 
         // PlayerDataController will attempt to write a new PlayerData. 
-        /*
         if (PlayerDataController.WriteNewPlayerData(InputText.text)) {
 
             //menuController.EnableMenu(3);
-            menuController.MenuInputEvent -= MenuInputUpdate;
             Destroy(gameObject);
         }
         else {
-            // False if the file already exists (flash red)
+            // False if the file already exists (flash red or somth)
         }
     }
-    */
+
     public void BackButton() {
 
         // enabled the player data select menu
         menuController.EnableMenu(1);
         Destroy(gameObject);
     }
-    
+    */
 }

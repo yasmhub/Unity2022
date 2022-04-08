@@ -12,7 +12,7 @@ public class InputListenerTest : InputReceiver
     }
 
     // Update is called once per frame
-    public override void InputUpdate(InputListener InputListener)
+    public void InputUpdate(InputListener InputListener)
     {
         Debug.Log("LookH: " + InputListener.lookH + " | LookV: " + InputListener.lookV);
         Debug.Log("moveH: " + InputListener.moveH + " | MoveV: " + InputListener.moveV);

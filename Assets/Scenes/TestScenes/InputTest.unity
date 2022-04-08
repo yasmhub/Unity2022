@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dbfea80ba86fea4681f25846a8622b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputChannel: 1
+  InputChannel: 0
 --- !u!4 &247980281
 Transform:
   m_ObjectHideFlags: 0
@@ -201,6 +201,7 @@ MonoBehaviour:
   LookVertical: 2
   LookHorizontal: 3
   Jump: 4
+  Back: 5
 --- !u!4 &579245959
 Transform:
   m_ObjectHideFlags: 0
