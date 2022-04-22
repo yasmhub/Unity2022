@@ -5,51 +5,35 @@ using UnityEngine.UI;
 using Rewired;
 
 // input file/name and create a new save file / player data
-public class PlayerCreateDataMenu : BaseMenu, InputReceiver {
+public class PlayerCreateDataMenu : BaseMenu {
     
     bool useKeyboard = false;  // check all keyboard keys in Update?
 
     // used to change text ui displaying characters for joystick file name input
-    public void InputUpdate(InputListener InputListener)
+    public void MenuInput(InputListener InputListener)
     {
-        if (Time.time >= nextInputTime && !useKeyboard)
+        if (InputListener.back)
         {
-            nextInputTime += InputFrequency;
+            RemoveLetter();
+            return;
+        }
 
-            // if the player presses "A" input the character
-            if (InputListener.jump)
+        float horizontal = InputListener.moveH;
+        if (horizontal != 0f)
+        {
+            if (horizontal > 0f)
             {
-                AddLetter();
-                // menuController.InvokeFocusButton(); also acessible by external UI call
-                return;
-            }
 
-            if (InputListener.back)
+                letterIndex += 1;
+            }
+            else
             {
-                RemoveLetter();
-                return;
+
+                letterIndex -= 1;
             }
-
-            float horizontal = InputListener.moveH;
-            if (horizontal != 0f)
-            {
-                if (horizontal > 0f)
-                {
-
-                    letterIndex += 1;
-                }
-                else
-                {
-
-                    letterIndex -= 1;
-                }
-                UpdateWindow();
-            }
+            UpdateWindow();
         }
     }
-    // input is rate-limited
-    public float InputFrequency = 0.3f;
-    public float nextInputTime;
 
     [SerializeField] Text InputText;         // display the text input so far
     [SerializeField] Selectable[] LetterButtons;    // display chars on the text of these elements for controller selection
@@ -64,9 +48,8 @@ public class PlayerCreateDataMenu : BaseMenu, InputReceiver {
         // baseMenu sets an initial focused Selectable chosen from the editor
         base.Start();
 
-        GameMain.Game.Input.listeners[menuController.RewiredID].AddReciever(this);
-        // input is rate limited
-        nextInputTime = Time.time + InputFrequency;
+        // receive input from MenuController
+        menuController.MenuInput += MenuInput;
 
         // create a char alphabet array, file names are A-Z and underscore
         letters = new char[letterCount];
@@ -150,8 +133,7 @@ public class PlayerCreateDataMenu : BaseMenu, InputReceiver {
         window[2].text = letters[a].ToString();
     }
 
-    // button function called from UI by controller presses
-    // add the focused letter the the new name
+    // add the focused letter to the file name
     public void AddLetter()
     {
         string name = InputText.text;
@@ -203,6 +185,6 @@ public class PlayerCreateDataMenu : BaseMenu, InputReceiver {
 
     public void OnDestroy()
     {
-        GameMain.Game.Input.listeners[menuController.RewiredID].RemoveReceiver(this);
+        menuController.MenuInput -= MenuInput;
     }
 }

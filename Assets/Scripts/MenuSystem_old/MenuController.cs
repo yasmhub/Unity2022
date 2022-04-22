@@ -5,9 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rewired;
 
+// menus that receive input attach to MenuController to share rate-limiting
+public delegate void MenuInput(InputListener InputListener);
+
 // instantiate menu prefabs & poll navigation for one player 
 public class MenuController : MonoBehaviour, InputReceiver {
 
+    public MenuInput MenuInput;
     public void InputUpdate(InputListener InputListener)
     {
         // if previous input hasn't locked us out
@@ -18,50 +22,60 @@ public class MenuController : MonoBehaviour, InputReceiver {
             {
                 InvokeFocusButton();
                 nextInputTime = Time.time + InputFrequency;
+                hasInput = true;
             }
-            // 
             if (InputListener.back)
             {
                 nextInputTime = Time.time + InputFrequency;
+                hasInput = true;
             }
-
             // input moves selectable
             Selectable newFocus = null;
-            if (Mathf.Abs(InputListener.moveV) >= 0.2f)
+            if (Mathf.Abs(InputListener.moveH) >= deadZone)
             {
-                if (InputListener.moveV > 0)
+                nextInputTime = Time.time + InputFrequency;
+                hasInput = true;
+                if (InputListener.moveH > 0)
                 {
-
-                    newFocus = focus.FindSelectableOnUp();
+                    newFocus = focus.FindSelectableOnRight();
                 }
                 else
                 {
-                    newFocus = focus.FindSelectableOnDown();
+                    newFocus = focus.FindSelectableOnLeft();
                 }
             }
-            if (Mathf.Abs(InputListener.moveV) >= 0.2f)
+            else if (Mathf.Abs(InputListener.moveV) >= deadZone)
             {
+                nextInputTime = Time.time + InputFrequency;
+                hasInput = true;
                 if (InputListener.moveV > 0)
                 {
-
                     newFocus = focus.FindSelectableOnUp();
                 }
                 else
                 {
-
                     newFocus = focus.FindSelectableOnDown();
                 }
             }
             if (newFocus != null)
             {
                 SetFocus(newFocus);
-                nextInputTime = Time.time + InputFrequency;
+            }
+            if (hasInput)
+            {
+                hasInput = false;
+                MenuInput(InputListener);
             }
         }
     }
+    // dummy method to stop warnings if MenuInput has no subscriber
+    public void SomeSubscriber(InputListener InputListener) { }
+
     // input is rate-limited
-    public float InputFrequency = 0.3f;
+    public float InputFrequency = 0.15f;
     public float nextInputTime;
+    public float deadZone = 0.2f;
+    bool hasInput = false;
 
     [Header("Channel driving this menu.")]
     [SerializeField] int rewiredID;
@@ -71,7 +85,6 @@ public class MenuController : MonoBehaviour, InputReceiver {
     [SerializeField] GameObject[] MenuPrefabs;  // one instantiated at a time
     // 
     Player rewiredPlayer;                       // the player controlling this menu
-
     BaseMenu currentMenu;
     Selectable focus;
 
@@ -81,6 +94,7 @@ public class MenuController : MonoBehaviour, InputReceiver {
     [SerializeField] Color DefaultColor = Color.white;
     ColorBlock focusedColors;
     ColorBlock defaultColors;
+
     // NultiplayerMenuManager sets these 0...3 on instantiated menus
     public int ScreenPosition
     {
@@ -105,6 +119,9 @@ public class MenuController : MonoBehaviour, InputReceiver {
 
     void Awake()
     {
+        // placeholder subscriber for menu input event
+        MenuInput += SomeSubscriber;
+
         // destroy any child objects (menu prefabs being worked on in the editor)
         foreach (Transform t in transform)
         {
@@ -218,5 +235,8 @@ public class MenuController : MonoBehaviour, InputReceiver {
     public void OnDestroy()
     {
         GameMain.Game.Input.listeners[rewiredID].RemoveReceiver(this);
+
+        // placeholder subscriber for menu input event
+        MenuInput -= SomeSubscriber;
     }
 }
