@@ -109,7 +109,6 @@ public class PlayerCreateDataMenu : BaseMenu {
     // update the text elements in window[] to display chars for selection
     void UpdateWindow()
     {
-
         // wrap letterINdex scrolling around the char array
         if (letterIndex >= letterCount)
         {
@@ -162,22 +161,23 @@ public class PlayerCreateDataMenu : BaseMenu {
     // the JOIN button creates a new player data and opens the next menu
     public void CreatePlayerDataButton()
     {
+        var playerData = PlayerDataController.CreatePlayerData(InputText.text);
 
-        /*
-        // PlayerDataController will attempt to write a new PlayerData. 
-        if (PlayerDataController.WriteNewPlayerData(InputText.text)) {
-
-            //menuController.EnableMenu(3);
-            Destroy(gameObject);
+        // file already exists (flash red or somthing)
+        if (playerData.Item2 == false)
+        {
+            return;
         }
-        else {
-            // False if the file already exists (flash red or somth)
-        }*/
+        else
+        {
+            playerData.Item1.RewiredID = menuController.RewiredID;
+            // menuController.EnableMenu(#);
+            GameMain.Game.AddPlayer(playerData.Item1);
+        }
     }
 
     public void BackButton()
     {
-
         // enabled the player data select menu
         menuController.EnableMenu(1);
         Destroy(gameObject);
