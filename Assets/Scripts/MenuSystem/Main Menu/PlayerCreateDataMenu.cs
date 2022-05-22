@@ -132,7 +132,7 @@ public class PlayerCreateDataMenu : BaseMenu {
         window[2].text = letters[a].ToString();
     }
 
-    // add the focused letter to the file name
+    // add  focused letter to file name
     public void AddLetter()
     {
         string name = InputText.text;
@@ -143,7 +143,7 @@ public class PlayerCreateDataMenu : BaseMenu {
         UpdateWindow();
     }
 
-    // backspace - remove the last letter
+    // remove the last letter
     public void RemoveLetter()
     {
         string name = InputText.text;
@@ -158,7 +158,6 @@ public class PlayerCreateDataMenu : BaseMenu {
         }
     }
 
-    // the JOIN button creates a new player data and opens the next menu
     public void CreatePlayerDataButton()
     {
         var playerData = PlayerDataController.CreatePlayerData(InputText.text);

@@ -12,6 +12,7 @@ public delegate void MenuInput(InputListener InputListener);
 public class MenuController : MonoBehaviour, InputReceiver {
 
     public MenuInput MenuInput;
+    public bool focusMoved = false;
     public void InputUpdate(InputListener InputListener)
     {
         // if previous input hasn't locked us out
@@ -31,6 +32,7 @@ public class MenuController : MonoBehaviour, InputReceiver {
             }
             // input moves selectable
             Selectable newFocus = null;
+            focusMoved = false;
             if (Mathf.Abs(InputListener.moveH) >= deadZone)
             {
                 nextInputTime = Time.time + InputFrequency;
@@ -59,6 +61,7 @@ public class MenuController : MonoBehaviour, InputReceiver {
             }
             if (newFocus != null)
             {
+                focusMoved = true;
                 SetFocus(newFocus);
             }
             if (hasInput)
@@ -66,6 +69,7 @@ public class MenuController : MonoBehaviour, InputReceiver {
                 hasInput = false;
                 MenuInput(InputListener);
             }
+            
         }
     }
     // dummy method to stop warnings if MenuInput has no subscriber
@@ -74,7 +78,7 @@ public class MenuController : MonoBehaviour, InputReceiver {
     // input is rate-limited
     public float InputFrequency = 0.15f;
     public float nextInputTime;
-    public float deadZone = 0.2f;
+    public float deadZone = 0.1f;
     bool hasInput = false;
 
     [Header("Channel driving this menu.")]

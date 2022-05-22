@@ -6,40 +6,53 @@ using UnityEngine.UI;
 using Rewired;
 
 // this menu instantiates a list of buttons for each save file found
-// their text is set to match player save filenames
 // when pressed, they read back the UI Text element and load the matching file
 public class PlayerSelectDataMenu : BaseMenu {
-    /*
-    // This button is used as a "local prefab"
-    // It's simply disabled and copied for each player save
-    [SerializeField] GameObject PlayerDataButton;
+    
+    [SerializeField] GameObject TemplateButton;
     Vector3 buttonOffset;       // how far to move each button
     Selectable lastButton;      // used to tie navigation links together
     //
     Transform buttonParent;     // all the buttons are attached to this moving object
 
-    new void Start() {
-        // all BaseMenus reference a MenuController
-        // baseMenu sets an initial focused Selectable
+    public void MenuInput(InputListener InputListener)
+    {
+        if (menuController.focusMoved)
+        {
+            if (InputListener.moveV > 0)
+            {
+
+                buttonParent.transform.localPosition += buttonOffset;
+            }
+            else
+            {
+
+                buttonParent.transform.localPosition -= buttonOffset;
+            }
+        }
+    }
+
+    new void Start()
+    {
         base.Start();
 
-        // subscribe to input events- this script additionally moves a transform on menu inputs
-        menuController.MenuInputEvent += MenuInputMoveButtons;
+        // receive input from MenuController
+        menuController.MenuInput += MenuInput;
 
+        // get a template button to clone for load player buttons
+        TemplateButton = transform.GetChild(0).GetChild(0).Find("Player Data Button").gameObject;
         // get the button's height (use to determine positioning offset)
-        float buttonHeight = PlayerDataButton.GetComponent<RectTransform>().rect.height;
+        float buttonHeight = TemplateButton.GetComponent<RectTransform>().rect.height;
         // the buttons will be attached to a common parent
-        buttonParent = PlayerDataButton.transform.parent;
+        buttonParent = TemplateButton.transform.parent;
         // each time a button is added move this far
         buttonOffset = Vector3.down * buttonHeight;
 
         // if there are save files, clone a button for each one
-        string[] fileNames;
-        if(PlayerDataController.GetFileNames()) {
+        var fileNames = PlayerDataController.GetFileNames();
+        if(fileNames.Item2) {
 
-            fileNames = PlayerDataController.FileNames;
-
-            int nameCount = fileNames.Length - 1;
+            int nameCount = fileNames.Item1.Length - 1;
             for (int i = 0; i <= nameCount; ++i) {
 
                 Selectable newButton;
@@ -51,21 +64,21 @@ public class PlayerSelectDataMenu : BaseMenu {
                 if (i == 0) {
 
                     // set the Text element of the button
-                    buttonText = PlayerDataButton.transform.GetChild(0).GetComponent<Text>();
-                    buttonText.text = fileNames[i];
+                    buttonText = TemplateButton.transform.GetChild(0).GetComponent<Text>();
+                    buttonText.text = fileNames.Item1[i];
 
-                    lastButton = PlayerDataButton.GetComponent<Selectable>();
+                    lastButton = TemplateButton.GetComponent<Selectable>();
                 }
                 else {
 
                     // instantiate a new button for each player, positioned at the original
-                    GameObject go = Instantiate(PlayerDataButton, buttonParent, false);
+                    GameObject go = Instantiate(TemplateButton, buttonParent, false);
                     // move each player's button down in local UI space by the offset
                     go.transform.localPosition += (buttonOffset * i);
 
                     // get the Text element of the button
                     buttonText = go.transform.GetChild(0).GetComponent<Text>();
-                    buttonText.text = fileNames[i];
+                    buttonText.text = fileNames.Item1[i];
 
                     // get the Button element    
                     newButton = go.GetComponent<Selectable>();
@@ -90,37 +103,14 @@ public class PlayerSelectDataMenu : BaseMenu {
     }
 
     void OnDestroy() {
-        menuController.MenuInputEvent -= MenuInputMoveButtons;
+        // receive input from MenuController
+        menuController.MenuInput -= MenuInput;
     }
 
-    // input frequency is gated by the controller, whose events call this function
-    void MenuInputMoveButtons(MenuInputData InputData) {
-
-        if(InputData.focusMoved) {
-            float vertical = InputData.vertical;
-            if (vertical != 0f) {
-
-                if (vertical > 0f) {
-
-                    buttonParent.transform.localPosition += buttonOffset;
-                }
-                else {
-
-                    buttonParent.transform.localPosition -= buttonOffset;
-                }
-            }
-        }
-    }
-    */
-
-    // enable save file creation menu
+    // open PlayerCreateDataMenu
     public void NewPlayerButton() {
 
         menuController.EnableMenu(2);
-
-        // don't forget to unsubscribe the additional input action
-        //menuController.MenuInputEvent -= MenuInputMoveButtons;
-
         //Destroy(gameObject);
     }
 }
