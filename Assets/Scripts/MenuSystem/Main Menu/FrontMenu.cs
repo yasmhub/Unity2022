@@ -3,34 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FrontMenu : BaseMenu {
-    /*
-    // eventually the adventure mode will also ahve some data selection, but for now just load the scene
-    public void AdventureButton() {
+public class FrontMenu : BaseMenu 
+{
 
-        MainState.Instance.SceneController.LoadScene("Learning ProBuilder", LoadSceneMode.Single);
-
-        // disable the main menu controller (there is no main menu open to control)
-        menuController.enabled = false;
-
-        Destroy(gameObject);
-    }
-    */
-    public void SinglePlayerButton() {
-
+    public void SinglePlayerButton()
+    {
         menuController.EnableMenu(1);
     }
 
-    /*
-    public void MultiplayerButton() {
-        
-        // enable the Multiplayer Menu Manager, which will enable up to 4 Player Menu Controllers
-        MainState.Instance.MultiplayerMenuManager.enabled = true;
+    
+    public void MultiplayerButton()
+    {       
+        // enable the Multiplayer Menu Manager, it will enable individual player Menu Controllers
+        GameMain.Instance.MultiplayerMenuManager.enabled = true;
 
         // disable the main menu controller (there is no main menu open to control)
         menuController.enabled = false;
-
+        menuController.gameObject.SetActive(false);
+        
         Destroy(gameObject);
     }
-    */
 }

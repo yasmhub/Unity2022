@@ -171,7 +171,7 @@ public class PlayerCreateDataMenu : BaseMenu {
         {
             playerData.Item1.RewiredID = menuController.RewiredID;
             // menuController.EnableMenu(#);
-            GameMain.Game.AddPlayer(playerData.Item1);
+            GameMain.Instance.AddPlayer(playerData.Item1);
         }
     }
 

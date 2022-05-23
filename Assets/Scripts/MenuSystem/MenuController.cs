@@ -117,7 +117,7 @@ public class MenuController : MonoBehaviour, InputReceiver {
         set
         {
             rewiredID = value;
-            GameMain.Game.Input.listeners[rewiredID].AddReciever(this);
+            GameMain.Instance.Input.listeners[rewiredID].AddReciever(this);
         }
     }
 
@@ -150,7 +150,7 @@ public class MenuController : MonoBehaviour, InputReceiver {
     void Start()
     {
         // get input singleton
-        GameMain.Game.Input.listeners[rewiredID].AddReciever(this);
+        GameMain.Instance.Input.listeners[rewiredID].AddReciever(this);
         // input is rate limited
         nextInputTime = Time.time + InputFrequency;
 
@@ -161,29 +161,33 @@ public class MenuController : MonoBehaviour, InputReceiver {
     void OnEnable()
     {
         nextInputTime = Time.time + InputFrequency;
+        // get input singleton
+        //GameMain.Instance.Input.listeners[rewiredID].AddReciever(this);
     }
+    void OnDisable()
+    {
+        nextInputTime = Time.time + InputFrequency;
+        // get input singleton
+        GameMain.Instance.Input.listeners[rewiredID].RemoveReceiver(this);
+    }
+
 
     // try to invoke the focused menu button's function
     public void InvokeFocusButton()
     {
         if (focus.GetComponent<Button>())
         {
-
             Button b = focus.GetComponent<Button>();
             b.onClick.Invoke();
-            return;
         }
     }
 
     public void InvokeBackButton()
     {
-
         if (focus.GetComponent<Button>())
         {
-
             Button b = focus.GetComponent<Button>();
             b.onClick.Invoke();
-            return;
         }
     }
 
@@ -229,7 +233,6 @@ public class MenuController : MonoBehaviour, InputReceiver {
         }
         else
         {
-
             // initial case
             focus = NewFocus;
             focus.colors = focusedColors;
@@ -238,7 +241,7 @@ public class MenuController : MonoBehaviour, InputReceiver {
 
     public void OnDestroy()
     {
-        GameMain.Game.Input.listeners[rewiredID].RemoveReceiver(this);
+        GameMain.Instance.Input.listeners[rewiredID].RemoveReceiver(this);
 
         // placeholder subscriber for menu input event
         MenuInput -= SomeSubscriber;

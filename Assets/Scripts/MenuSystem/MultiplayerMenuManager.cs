@@ -7,51 +7,40 @@ using Rewired;
 // instantiate four small menus for players
 // listens for an initial input, then enables a menu for each player
 public class MultiplayerMenuManager : MonoBehaviour {
-    /*
+
     [Header("Player Menu Prefab")]
     [SerializeField] GameObject PlayerMenuPrefab;               // the player menu prefab
-    MenuController[] menuControllers = new MenuController[4];   // 4 player menu instances
+    MenuController[] menuControllers = new MenuController[2];   // 4 player menu instances
 
     [Header("'Press to join' Rewired Actions")]
-    [SerializeField] int JoinActionID_1 = 5;                    // a couple Rewired actions,
-    [SerializeField] int JoinActionID_2 = 6;                    // by ID, (press to join game)
+    [SerializeField] int JoinActionID_1 = 4;                    // rewired action that joins game
 
-    // instantiate 4 player menu prefabs, position each (in array, starting top-left moving clockwise)
-    // disable all player menus and this manager
-    // a Front Menu button opens multiplayer by enabling this object.
-    void Awake() {
-        MainState.Instance.MultiplayerMenuManager = this;
+    // instantiate a menu for each player, position on screen
+    void Awake()
+    {
+        GameMain.Instance.MultiplayerMenuManager = this;
 
         // destroy any unwanted child object prefabs present in the editor
-        foreach (Transform t in transform) {
+        foreach (Transform t in transform)
+        {
             Destroy(t.gameObject);
         }
 
-        // moves each player menu instantiated ... each clone occupies 1/4 of the screen
-        for (int i = 0; i < 4; ++i) {
-
+        //instantiate, position coop menus
+        for (int i = 0; i < 2; ++i)
+        {
             GameObject go = Instantiate(PlayerMenuPrefab, transform);
             MenuController mc = go.GetComponent<MenuController>();
             menuControllers[i] = mc;
 
-            // menu controller remembers a unique array position (PlayerData, in MainState)
-            mc.ScreenPosition = i;
-            // menu control is disabled
+            // menus start out disabled until being activated by input
             mc.enabled = false;
-            // menu is hidden
             go.SetActive(false);
-            // position player menus into UI quadrants
-            switch (i) {
-                case 1:
-                    go.transform.localPosition += Vector3.right * 960; // 960x540
-                    break;
-                case 2:
-                    go.transform.localPosition -= Vector3.up * 540;
-                    break;
-                case 3:
-                    go.transform.localPosition += Vector3.right * 960;
-                    go.transform.localPosition -= Vector3.up * 540;
-                    break;
+
+            // position player menu
+            if (i == 1)
+            {
+                go.transform.localPosition += Vector3.right * 960;
             }
         }
         // this script waits to be enabled by a root menu
@@ -60,53 +49,48 @@ public class MultiplayerMenuManager : MonoBehaviour {
 
     // make menus visible, but do not enable their inputs just yet
     // register all player channels to listen for join presses
-    void OnEnable() {
+    void OnEnable()
+    {
 
         IList<Rewired.Player> players = ReInput.players.GetPlayers();
 
         // skips player 0 (this utility player always uses all controllers)
-        for (int i = players.Count - 1; i >= 1; --i) {
+        for (int i = players.Count - 1; i >= 1; --i)
+        {
 
             players[i].AddInputEventDelegate(OnInputUpdate, UpdateLoopType.Update);
 
-            JayDebug.Log("RewiredID " + players[i].id + " is being polled for multiplayer input hook.", this);
+            Debug.Log("RewiredID " + players[i].id + " is being polled for multiplayer input hook.", this);
         }
 
-        foreach (MenuController mc in menuControllers) {
+        foreach (MenuController mc in menuControllers)
+        {
             mc.gameObject.SetActive(true);
         }
     }
 
-    void OnDisable() {
-        IList<Rewired.Player> players = ReInput.players.GetPlayers();
-        for (int i = players.Count-1; i >= 1; --i) {
-            players[i].ClearInputEventDelegates();
-        }
-    }
-
-    void OnDestroy() {
-        IList<Rewired.Player> players = ReInput.players.GetPlayers();
-        for (int i = players.Count-1; i >= 1; --i) {
-            players[i].ClearInputEventDelegates();
-        }
-    }
-
     // listen for all connected players,
-    void OnInputUpdate(InputActionEventData Data) {
+    void OnInputUpdate(InputActionEventData Data)
+    {
 
         // has this player already joined?
-        if (Data.player.isPlaying == false) {
-
+        if (Data.player.isPlaying == false)
+        {
+            Debug.Log(Data.player.GetButtonDown(0));
+            Debug.Log(Data.player.GetButtonDown(1));
+            Debug.Log(Data.player.GetButtonDown(2));
+            Debug.Log(Data.player.GetButtonDown(3));
+            Debug.Log(Data.player.GetButtonDown(4));
             // a new player pressed the join buttons ...
-            if (Data.player.GetButtonDown(JoinActionID_1) ||
-                Data.player.GetButtonDown(JoinActionID_2)) {
-
+            if (Data.player.GetButtonDown(JoinActionID_1))
+            {
+                Debug.Log("beep");                /*
                 // ... a player can only join once.
                 Data.player.isPlaying = true;
 
                 // find the first disabled menu, enable it for this player
-                for (int i = 0; i < 4; ++i) {
-
+                for (int i = 0; i < 2; ++i)
+                {
                     if(menuControllers[i].enabled) {
                         continue;
                     }
@@ -120,9 +104,8 @@ public class MultiplayerMenuManager : MonoBehaviour {
                         menuControllers[i].InvokeFocusButton();
                         break;
                     }
-                }            
+                }      */
             }
         }
     }
-    */
 }

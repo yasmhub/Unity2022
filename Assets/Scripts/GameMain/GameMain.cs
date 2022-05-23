@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class GameMain : MonoBehaviour
 {
-    public static GameMain Game;
+    public static GameMain Instance;
     public bool someBool = false;
     public bool otherBool;
 
     public InputMain Input;
+    public MultiplayerMenuManager MultiplayerMenuManager;
 
     PlayerData[] playerData;
     int playerCount = 0;
 
     void Awake()
     {
-        Game = this;
+        Instance = this;
         Input = transform.GetComponentInChildren<InputMain>();
         playerData = new PlayerData[2];
     }
