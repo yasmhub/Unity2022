@@ -57,6 +57,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitialFocus: {fileID: 114545705132346950}
   BackButton: {fileID: 0}
+  PlayerMenuPrefab: {fileID: 1702184949660934, guid: 796888b8e1eb66e4ba655eb29277fc66, type: 3}
 --- !u!222 &222461736989603230
 CanvasRenderer:
   m_ObjectHideFlags: 0
