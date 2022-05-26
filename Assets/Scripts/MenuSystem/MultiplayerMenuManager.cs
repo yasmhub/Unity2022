@@ -12,8 +12,7 @@ public class MultiplayerMenuManager : MonoBehaviour {
     [SerializeField] GameObject PlayerMenuPrefab;               // the player menu prefab
     MenuController[] menuControllers = new MenuController[2];   // 4 player menu instances
 
-    [Header("'Press to join' Rewired Actions")]
-    [SerializeField] int JoinActionID_1 = 4;                    // rewired action that joins game
+    int JoinActionID_1 = 4;                                     // rewired action that joins game
 
     // instantiate a menu for each player, position on screen
     void Awake()
@@ -76,15 +75,9 @@ public class MultiplayerMenuManager : MonoBehaviour {
         // has this player already joined?
         if (Data.player.isPlaying == false)
         {
-            Debug.Log(Data.player.GetButtonDown(0));
-            Debug.Log(Data.player.GetButtonDown(1));
-            Debug.Log(Data.player.GetButtonDown(2));
-            Debug.Log(Data.player.GetButtonDown(3));
-            Debug.Log(Data.player.GetButtonDown(4));
             // a new player pressed the join buttons ...
             if (Data.player.GetButtonDown(JoinActionID_1))
             {
-                Debug.Log("beep");                /*
                 // ... a player can only join once.
                 Data.player.isPlaying = true;
 
@@ -94,8 +87,7 @@ public class MultiplayerMenuManager : MonoBehaviour {
                     if(menuControllers[i].enabled) {
                         continue;
                     }
-                    else {
-                        
+                    else {                      
                         // set the MenuController to poll this player
                         menuControllers[i].RewiredID = Data.playerId;
                         menuControllers[i].enabled = true;
@@ -104,7 +96,7 @@ public class MultiplayerMenuManager : MonoBehaviour {
                         menuControllers[i].InvokeFocusButton();
                         break;
                     }
-                }      */
+                }
             }
         }
     }
