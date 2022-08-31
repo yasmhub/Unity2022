@@ -7,8 +7,9 @@ using Rewired;
 
 // this menu instantiates a list of buttons for each save file found
 // when pressed, they read back the UI Text element and load the matching file
-public class PlayerSelectDataMenu : BaseMenu {
-    
+public class PlayerSelectDataMenu : BaseMenu
+{
+
     [SerializeField] GameObject TemplateButton;
     Vector3 buttonOffset;       // how far to move each button
     Selectable lastButton;      // used to tie navigation links together
@@ -50,10 +51,12 @@ public class PlayerSelectDataMenu : BaseMenu {
 
         // if there are save files, clone a button for each one
         var fileNames = PlayerDataController.GetFileNames();
-        if(fileNames.Item2) {
+        if (fileNames.Item2)
+        {
 
             int nameCount = fileNames.Item1.Length - 1;
-            for (int i = 0; i <= nameCount; ++i) {
+            for (int i = 0; i <= nameCount; ++i)
+            {
 
                 Selectable newButton;
                 Text buttonText;
@@ -61,7 +64,8 @@ public class PlayerSelectDataMenu : BaseMenu {
 
                 // first button is edge case (already exists, and the initial loop would have a null lastButton for nav links)
                 // (the first in the list can simply skip nav links)
-                if (i == 0) {
+                if (i == 0)
+                {
 
                     // set the Text element of the button
                     buttonText = TemplateButton.transform.GetChild(0).GetComponent<Text>();
@@ -69,7 +73,8 @@ public class PlayerSelectDataMenu : BaseMenu {
 
                     lastButton = TemplateButton.GetComponent<Selectable>();
                 }
-                else {
+                else
+                {
 
                     // instantiate a new button for each player, positioned at the original
                     GameObject go = Instantiate(TemplateButton, buttonParent, false);
@@ -102,15 +107,27 @@ public class PlayerSelectDataMenu : BaseMenu {
         // Destroy(PlayerDataButton);
     }
 
-    void OnDestroy() {
+    void OnDestroy()
+    {
         // receive input from MenuController
         menuController.MenuInput -= MenuInput;
     }
 
     // open PlayerCreateDataMenu
-    public void NewPlayerButton() {
-
+    public void NewPlayerButton()
+    {
         menuController.EnableMenu(2);
         //Destroy(gameObject);
+    }
+
+    // load selected PlayerData
+    public void LoadPlayerButton(Transform t)
+    {
+        // buttons were generated with text matching filenames
+        string n = t.GetChild(0).GetComponent<Text>().text;
+        PlayerData d = PlayerDataController.LoadPlayerData(n);
+        GameMain.Instance.AddPlayer(d);
+
+
     }
 }

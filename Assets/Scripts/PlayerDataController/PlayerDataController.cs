@@ -64,7 +64,9 @@ public static class PlayerDataController
 
         BinaryFormatter binaryFormatter = new BinaryFormatter();
         FileStream newFile = File.Open(savePath + PlayerName, FileMode.Create);
+
         PlayerData newPlayerData = new PlayerData();
+        newPlayerData.name = PlayerName;
 
         binaryFormatter.Serialize(newFile, newPlayerData);
         newFile.Close();
@@ -74,9 +76,21 @@ public static class PlayerDataController
     }
 
     // load a save file
-    public static void LoadPlayerData(PlayerData NewSaveData)
+    public static PlayerData LoadPlayerData(string PlayerName)
     {
-        // BinaryFormatter binaryFormatter = new BinaryFormatter();
+        string savePath = Application.persistentDataPath + "/Save/";
+        var directoryInfo = new DirectoryInfo(savePath);
+        FileInfo[] fileInfo = directoryInfo.GetFiles();
+
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        FileStream newFile = File.Open(savePath + PlayerName, FileMode.Open);
+        PlayerData playerData = new PlayerData();
+
+        playerData = (PlayerData)binaryFormatter.Deserialize(newFile);
+        newFile.Close();
+        Debug.Log("File named " + playerData.name + " loaded.");
+
+        return playerData;
     }
 
     // update a player's save file
