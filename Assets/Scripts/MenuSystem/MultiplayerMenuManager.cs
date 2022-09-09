@@ -54,12 +54,12 @@ public class MultiplayerMenuManager : MonoBehaviour {
         IList<Rewired.Player> players = ReInput.players.GetPlayers();
 
         // skips player 0 (this utility player always uses all controllers)
-        for (int i = players.Count - 1; i >= 1; --i)
+        for (int i = players.Count - 1; i >= 2; --i)
         {
 
             players[i].AddInputEventDelegate(OnInputUpdate, UpdateLoopType.Update);
 
-            Debug.Log("RewiredID " + players[i].id + " is being polled for multiplayer input hook.", this);
+            Debug.Log("RewiredID " + players[i].id + " is being polled for multiplayer input hook. " + i, this);
         }
 
         foreach (MenuController mc in menuControllers)
@@ -70,12 +70,12 @@ public class MultiplayerMenuManager : MonoBehaviour {
 
     // listen for all connected players,
     void OnInputUpdate(InputActionEventData Data)
-    {
-
+    {   
         // has this player already joined?
         if (Data.player.isPlaying == false)
         {
-            // a new player pressed the join buttons ...
+            Debug.Log(Data.playerId);
+            // a new player pressed the join button ...
             if (Data.player.GetButtonDown(JoinActionID_1))
             {
                 // ... a player can only join once.
@@ -87,7 +87,7 @@ public class MultiplayerMenuManager : MonoBehaviour {
                     if(menuControllers[i].enabled) {
                         continue;
                     }
-                    else {                      
+                    else {
                         // set the MenuController to poll this player
                         menuControllers[i].RewiredID = Data.playerId;
                         menuControllers[i].enabled = true;
